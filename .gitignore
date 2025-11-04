@@ -1,0 +1,15 @@
+# Node (Angular)
+Frontend/**/node_modules
+Frontend/**/dist
+
+# Java (Spring Boot)
+Backend/**/target
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE configs
+.idea/
+.vscode/
+.settings/
