@@ -1,0 +1,5 @@
+package ndiaye.sn.banque.models;
+
+public class CurrentAccount {
+
+}

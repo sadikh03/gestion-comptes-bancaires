@@ -1,0 +1,5 @@
+package ndiaye.sn.banque.models;
+
+public abstract class CompteBancaire {
+
+}

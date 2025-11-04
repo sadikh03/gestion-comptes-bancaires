@@ -1,0 +1,10 @@
+spring.application.name=gestion_de_comptes_bancaires
+
+server.port=3300
+
+spring.datasource.url=jdbc:mysql://localhost:3306/banque?useSSL=false&serverTimezone=UTC
+
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true

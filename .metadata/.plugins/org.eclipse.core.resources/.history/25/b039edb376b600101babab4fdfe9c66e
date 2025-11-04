@@ -1,0 +1,42 @@
+package ndiaye.sn.banque.models;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.Data;
+import ndiaye.sn.banque.enums.AccountStatus;
+
+@Entity
+@Data
+//toute les sous classes seront dans la meme table
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//creation de la colonne type pour guider hibernate a reconnaitre les sous classe et la valeur sera un integer
+@DiscriminatorColumn(name = "type" , discriminatorType = DiscriminatorType.INTEGER)
+//permet de renvoyer les entités correctement en JSON.
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public abstract class BankAccount {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id ;
+	@Column(nullable = false)
+	private String currency = "CFA" ; //devise
+	@Column(nullable = false)
+	private String accountNumber ;
+	@Column(nullable = false)
+	private double balance ;
+	@Column(nullable = false)
+	private AccountStatus status ;
+	@Column(nullable = false)
+	private Date createAt = new Date() ;
+	@ManyToOne
+	private Client client ;
+	//ignorer le champs l'hors de la serialisation eviter les boucles
+	@JsonBackReference
+	@OneToMany(mappedBy = "account")
+	Collection<Operation> operations = new ArrayList<>();
+}
