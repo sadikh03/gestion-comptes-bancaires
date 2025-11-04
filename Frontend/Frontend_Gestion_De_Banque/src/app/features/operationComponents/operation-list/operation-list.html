@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+      <div class="flex items-center space-x-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+            <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center mr-4">
+              <i class="fas fa-exchange-alt text-gray-600 text-lg"></i>
+            </div>
+            Historique des Opérations
+          </h1>
+          <p class="text-gray-600 mt-2 ml-14">{{ filteredOperations.length }} opération(s) trouvée(s)</p>
+        </div>
+      </div>
+      
+      <!-- Bouton Nouvelle Opération -->
+      <button
+        routerLink="/operations/create"
+        class="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors duration-200"
+      >
+        <i class="fas fa-plus-circle mr-2"></i>
+        Nouvelle Opération
+      </button>
+    </div>
+
+    <!-- Barre de recherche et filtres -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        
+        <!-- Recherche -->
+        <div class="lg:col-span-2">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <input 
+              type="text" 
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+              placeholder="Rechercher par client, numéro de compte ou opération..."
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-400 transition-colors duration-200"
+            >
+          </div>
+        </div>
+
+        <!-- Filtre par type -->
+        <div class="relative flex-1">
+          <select 
+            [(ngModel)]="selectedType"
+            (change)="onFilterChange()"
+            class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-gray-400 appearance-none bg-white cursor-pointer"
+          >
+            <option value="all">Tous les types</option>
+            <option value="CREDIT">Dépôts</option>
+            <option value="DEBIT">Retraits</option>
+          </select>
+          <i class="fas fa-chevron-down absolute right-3 top-3.5 text-gray-400 pointer-events-none"></i>
+        </div>
+      </div>
+
+      <!-- Indicateurs de recherche -->
+      <div class="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
+        <div *ngIf="searchTerm" class="flex items-center">
+          <i class="fas fa-search mr-2"></i>
+          Recherche: "{{ searchTerm }}"
+        </div>
+        <div *ngIf="selectedType !== 'all'" class="flex items-center">
+          <i class="fas fa-filter mr-2"></i>
+          Filtre: {{ getOperationTypeLabel(selectedType) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Grille des opérations -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-operation 
+        *ngFor="let operation of filteredOperations"
+        [operation]="operation"/>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto mb-4"></div>
+      <p class="text-gray-600">Chargement des opérations...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && filteredOperations.length === 0" class="text-center py-16">
+      <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-exchange-alt text-gray-400 text-2xl"></i>
+      </div>
+      <p class="text-gray-900 font-medium text-lg mb-2">
+        {{ searchTerm || selectedType !== 'all' ? 'Aucune opération trouvée' : 'Aucune opération' }}
+      </p>
+      <p class="text-gray-600 mb-6">
+        {{ searchTerm || selectedType !== 'all' 
+          ? 'Aucune opération ne correspond à vos critères de recherche' 
+          : 'Aucune opération n\'a été enregistrée' }}
+      </p>
+      <div *ngIf="searchTerm || selectedType !== 'all'" class="space-x-4">
+        <button 
+          (click)="clearFilters()"
+          class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center"
+        >
+          <i class="fas fa-times mr-2"></i>
+          Effacer les filtres
+        </button>
+        <button
+          routerLink="/operations/create"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center"
+        >
+          <i class="fas fa-plus-circle mr-2"></i>
+          Créer une opération
+        </button>
+      </div>
+      <div *ngIf="!searchTerm && selectedType === 'all'" class="space-x-4">
+        <button
+          routerLink="/operations/new"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center"
+        >
+          <i class="fas fa-plus-circle mr-2"></i>
+          Créer la première opération
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

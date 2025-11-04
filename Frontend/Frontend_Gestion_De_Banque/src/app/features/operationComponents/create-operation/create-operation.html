@@ -1,0 +1,282 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center space-x-4">
+        <button 
+          routerLink="/operations"
+          class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>
+          Retour
+        </button>
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Nouvelle Opération</h1>
+          <p class="text-gray-600 mt-1">Effectuez un dépôt, retrait ou transfert</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message d'erreur global -->
+    <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+      <div class="flex items-center space-x-3">
+        <i class="fas fa-exclamation-circle text-red-500"></i>
+        <p class="text-red-700 text-sm">{{ errorMessage }}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Partie Gauche - Formulaire -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+              <i class="fas fa-edit text-blue-600 text-sm"></i>
+            </div>
+            Informations de l'opération
+          </h2>
+
+          <form [formGroup]="operationForm" (ngSubmit)="onSubmit()">
+            <div class="space-y-6">
+              
+              <!-- Type d'opération -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Type d'opération <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-3 gap-4">
+                  <button 
+                    type="button"
+                    (click)="setOperationType('DEPOT')"
+                    [class]="getOperationButtonClass('DEPOT')"
+                  >
+                    <i class="fas fa-arrow-down mr-3"></i>
+                    Dépôt
+                  </button>
+                  <button 
+                    type="button"
+                    (click)="setOperationType('RETRAIT')"
+                    [class]="getOperationButtonClass('RETRAIT')"
+                  >
+                    <i class="fas fa-arrow-up mr-3"></i>
+                    Retrait
+                  </button>
+                  <button 
+                    type="button"
+                    (click)="setOperationType('TRANSFERT')"
+                    [class]="getOperationButtonClass('TRANSFERT')"
+                  >
+                    <i class="fas fa-exchange-alt mr-3"></i>
+                    Transfert
+                  </button>
+                </div>
+              </div>
+
+              <!-- Montant -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Montant (CFA) <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="number"
+                  formControlName="amount"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0.01"
+                  max="1000000"
+                  [class.border-red-300]="isFieldInvalid('amount')"
+                  [class.border-green-300]="isFieldValid('amount')"
+                >
+                <div *ngIf="isFieldInvalid('amount')" class="text-red-500 text-sm mt-1">
+                  {{ getAmountError() }}
+                </div>
+              </div>
+
+              <!-- Compte source -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Compte source <span class="text-red-500">*</span>
+                </label>
+                <select 
+                  formControlName="sourceAccountNumber"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                  [class.border-red-300]="isFieldInvalid('sourceAccountNumber')"
+                  [class.border-green-300]="isFieldValid('sourceAccountNumber')"
+                >
+                  <option value="">Sélectionnez un compte</option>
+                  <option *ngFor="let account of accounts" [value]="account.accountNumber">
+                    {{ getAccountDisplayName(account) }}
+                  </option>
+                </select>
+                <div *ngIf="isFieldInvalid('sourceAccountNumber')" class="text-red-500 text-sm mt-1">
+                  Le compte source est requis
+                </div>
+              </div>
+
+              <!-- Compte destination (uniquement pour transfert) -->
+              <div *ngIf="operationType === 'TRANSFERT'">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Compte destination <span class="text-red-500">*</span>
+                </label>
+                <select 
+                  formControlName="destinationAccountNumber"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                  [class.border-red-300]="isFieldInvalid('destinationAccountNumber')"
+                  [class.border-green-300]="isFieldValid('destinationAccountNumber')"
+                >
+                  <option value="">Sélectionnez un compte</option>
+                  <option *ngFor="let account of accounts" 
+                          [value]="account.accountNumber"
+                          [disabled]="account.accountNumber === operationForm.get('sourceAccountNumber')?.value">
+                    {{ getAccountDisplayName(account) }}
+                  </option>
+                </select>
+                <div *ngIf="isFieldInvalid('destinationAccountNumber')" class="text-red-500 text-sm mt-1">
+                  <span *ngIf="operationForm.get('destinationAccountNumber')?.errors?.['required']">
+                    Le compte destination est requis
+                  </span>
+                  <span *ngIf="operationForm.get('destinationAccountNumber')?.errors?.['sameAccount']">
+                    Le compte destination doit être différent du compte source
+                  </span>
+                </div>
+              </div>
+
+              <!-- Validation solde pour retrait et transfert -->
+              <div *ngIf="(operationType === 'RETRAIT' || operationType === 'TRANSFERT') && sourceAccount" 
+                   class="p-4 rounded-lg" 
+                   [class]="hasSufficientBalance() ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+                <div class="flex items-center space-x-3">
+                  <i [class]="hasSufficientBalance() ? 'fas fa-check-circle text-green-500' : 'fas fa-exclamation-triangle text-red-500'"></i>
+                  <div>
+                    <p class="text-sm font-medium" [class]="hasSufficientBalance() ? 'text-green-800' : 'text-red-800'">
+                      {{ hasSufficientBalance() ? 'Solde suffisant' : 'Solde insuffisant' }}
+                    </p>
+                    <p class="text-xs" [class]="hasSufficientBalance() ? 'text-green-600' : 'text-red-600'">
+                      Solde actuel: {{ getCurrentBalance() }}
+                      | Montant: {{ getOperationAmount() | number:'1.2-2' }} CFA
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Boutons -->
+              <div class="flex space-x-4 pt-4">
+                <button
+                  type="button"
+                  routerLink="/operations"
+                  class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+                >
+                  <i class="fas fa-times mr-2"></i>
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  [disabled]="!isFormReady()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-6 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+                >
+                  <i class="fas fa-save mr-2" [class.hidden]="isLoading"></i>
+                  <i class="fas fa-spinner fa-spin mr-2" [class.hidden]="!isLoading"></i>
+                  {{ isLoading ? 'Traitement...' : 'Exécuter l\'opération' }}
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Partie Droite - Aperçu -->
+      <div class="space-y-6">
+        
+        <!-- Aperçu de l'opération -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+              <i class="fas fa-eye text-green-600 text-sm"></i>
+            </div>
+            Aperçu de l'opération
+          </h2>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Type:</span>
+              <span class="font-semibold" [class]="getOperationColor()">
+                {{ getOperationTypeLabel() }}
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Montant:</span>
+              <span class="font-semibold">{{ getOperationAmount() | number:'1.2-2' }} CFA</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Statut:</span>
+              <span class="font-semibold" [class]="isFormReady() ? 'text-green-600' : 'text-red-600'">
+                {{ isFormReady() ? 'Prêt' : 'En attente' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informations compte source -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6" *ngIf="sourceAccount">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+              <i class="fas fa-wallet text-blue-600 text-sm"></i>
+            </div>
+            Compte Source
+          </h2>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Numéro:</span>
+              <span class="font-semibold">{{ sourceAccount.accountNumber }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Client:</span>
+              <span class="font-semibold">
+                {{ sourceAccount.client?.firstName }} {{ sourceAccount.client?.lastName }}
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Solde:</span>
+              <span class="font-semibold">{{ getCurrentBalance() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informations compte destination -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6" 
+             *ngIf="operationType === 'TRANSFERT' && destinationAccount">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+              <i class="fas fa-wallet text-green-600 text-sm"></i>
+            </div>
+            Compte Destination
+          </h2>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Numéro:</span>
+              <span class="font-semibold">{{ destinationAccount.accountNumber }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Client:</span>
+              <span class="font-semibold">
+                {{ destinationAccount.client?.firstName }} {{ destinationAccount.client?.lastName }}
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Solde:</span>
+              <span class="font-semibold">{{ getFormattedBalance(destinationAccount) }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

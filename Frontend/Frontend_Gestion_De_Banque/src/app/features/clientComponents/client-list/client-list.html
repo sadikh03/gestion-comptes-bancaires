@@ -1,0 +1,51 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header avec recherche -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Gestion des Clients</h1>
+        <p class="text-gray-600 mt-2">{{ filteredClients.length }} client(s) au total</p>
+      </div>
+      
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="relative">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          <input 
+            type="text" 
+            placeholder="Rechercher un client..." 
+            class="w-full sm:w-80 pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()">
+        </div>
+        
+        <button 
+          (click)="createClient.emit()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl flex items-center justify-center whitespace-nowrap"
+          (click)="onNewClient()"
+          >
+          <i class="fas fa-user-plus mr-2"></i>
+          Nouveau Client
+        </button>
+      </div>
+    </div>
+
+    <!-- Grille des clients - 3 par ligne -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Boucle sur filteredClients -->
+      <app-client 
+        *ngFor="let client of filteredClients"
+        [client]="client"
+        (manageAccounts)="onManageAccounts($event)" />
+    </div>
+
+    <!-- Message si aucun client -->
+    <div *ngIf="filteredClients.length === 0" 
+         class="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-200">
+      <i class="fas fa-users text-6xl mb-4 text-gray-300"></i>
+      <p class="text-xl font-medium text-gray-900 mb-2">Aucun client trouvé</p>
+      <p class="text-gray-600 mb-6">Aucun client ne correspond à votre recherche</p>
+    </div>
+
+  </div>
+</div>

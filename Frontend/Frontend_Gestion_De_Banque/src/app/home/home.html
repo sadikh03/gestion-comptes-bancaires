@@ -1,0 +1,212 @@
+<div class="relative min-h-screen bg-cover bg-center bg-fixed bg-no-repeat" 
+     style="background-image: url('assets/pictures/acceuilBank.webp');">
+  
+  <!-- Overlay blanc pour lisibilité -->
+  <div class="absolute inset-0 bg-white bg-opacity-85"></div>
+  
+  <!-- Contenu -->
+  <div class="relative z-10 min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative py-20 px-6">
+      <div class="max-w-6xl mx-auto text-center">
+        <!-- Badge animé -->
+        <div class="inline-flex items-center px-6 py-3 bg-emerald-100 rounded-full mb-8 border border-emerald-200 animate-pulse">
+          <span class="w-3 h-3 bg-emerald-500 rounded-full mr-3"></span>
+          <span class="text-emerald-700 font-semibold">Application de Gestion Bancaire</span>
+        </div>
+
+        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 animate-fade-in">
+          ASNBANK
+          <span class="text-emerald-600 animate-color-change">Manager</span>
+        </h1>
+        
+        <p class="text-xl lg:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed animate-slide-up">
+          Solution complète de gestion bancaire pour administrer vos clients, comptes et opérations 
+          financières en toute simplicité.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-bounce-in">
+          <button 
+            routerLink="/accounts"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-2 shadow-lg hover:shadow-2xl flex items-center justify-center group"
+          >
+            <i class="fas fa-chart-pie mr-3 group-hover:scale-110 transition-transform"></i>
+            Tableau de Bord Comptes
+          </button>
+          
+          <button 
+            routerLink="/clients"
+            class="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-2 flex items-center justify-center group"
+          >
+            <i class="fas fa-database mr-3 group-hover:scale-110 transition-transform"></i>
+            Base de Données Clients
+          </button>
+        </div>
+
+        <!-- Animation flèche vers le bas -->
+        <div class="animate-bounce mt-8">
+          <i class="fas fa-chevron-down text-3xl text-emerald-500"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-16 px-6 bg-white bg-opacity-90 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16 animate-fade-in">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Fonctionnalités Principales</h2>
+          <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+            Une suite complète d'outils pour gérer efficacement votre établissement bancaire
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Gestion des Comptes -->
+          <div class="flex items-start space-x-6 animate-slide-left group hover:transform hover:translate-x-2 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-university text-white text-3xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-emerald-600 transition-colors">Gestion des Comptes</h3>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Créez et gérez des comptes courants et épargne. Consultez les soldes en temps réel, 
+                visualisez les historiques de transactions et suivez l'évolution des portefeuilles clients.
+              </p>
+              <button 
+                routerLink="/accounts"
+                class="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center group-hover:underline"
+              >
+                Accéder à la gestion
+                <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Gestion des Clients -->
+          <div class="flex items-start space-x-6 animate-slide-right group hover:transform hover:translate-x-2 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-users text-white text-3xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Répertoire Clients</h3>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Base de données complète de tous vos clients. Ajoutez, modifiez et consultez les profils, 
+                avec historique des relations bancaires et statistiques détaillées.
+              </p>
+              <button 
+                routerLink="/clients"
+                class="text-blue-600 hover:text-blue-700 font-semibold flex items-center group-hover:underline"
+              >
+                Voir le répertoire
+                <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Opérations Bancaires -->
+          <div class="flex items-start space-x-6 animate-slide-left group hover:transform hover:translate-x-2 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-exchange-alt text-white text-3xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors">Journal des Opérations</h3>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Enregistrez et suivez toutes les opérations financières : virements, retraits, dépôts. 
+                Filtrez par date, type d'opération ou compte avec des outils de reporting avancés.
+              </p>
+              <button 
+                routerLink="/operations"
+                class="text-purple-600 hover:text-purple-700 font-semibold flex items-center group-hover:underline"
+              >
+                Consulter le journal
+                <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Rapports et Analytics -->
+          <div class="flex items-start space-x-6 animate-slide-right group hover:transform hover:translate-x-2 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <i class="fas fa-chart-line text-white text-3xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">Analytics & Rapports</h3>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Tableaux de bord interactifs avec indicateurs de performance. Génération automatique 
+                de rapports détaillés sur l'activité bancaire et la santé financière de l'établissement.
+              </p>
+              <button class="text-orange-600 hover:text-orange-700 font-semibold flex items-center group-hover:underline">
+                Voir les statistiques
+                <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avantages Section -->
+    <section class="py-16 px-6 bg-emerald-50 bg-opacity-90 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16 animate-fade-in">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Pourquoi Choisir ASNBANK Manager ?</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6 group hover:transform hover:-translate-y-2 transition-all duration-300 animate-float">
+            <div class="w-24 h-24 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300">
+              <i class="fas fa-bolt text-white text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-emerald-600">Interface Intuitive</h3>
+            <p class="text-gray-700">
+              Navigation simplifiée et prise en main immédiate sans formation complexe
+            </p>
+          </div>
+          
+          <div class="text-center p-6 group hover:transform hover:-translate-y-2 transition-all duration-300 animate-float" style="animation-delay: 0.2s;">
+            <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300">
+              <i class="fas fa-sync-alt text-white text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600">Temps Réel</h3>
+            <p class="text-gray-700">
+              Mises à jour instantanées des soldes et opérations sans délai
+            </p>
+          </div>
+          
+          <div class="text-center p-6 group hover:transform hover:-translate-y-2 transition-all duration-300 animate-float" style="animation-delay: 0.4s;">
+            <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300">
+              <i class="fas fa-mobile-alt text-white text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600">100% Responsive</h3>
+            <p class="text-gray-700">
+              Accessible sur tous les appareils : desktop, tablette et mobile
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="py-20 px-6 bg-white bg-opacity-90 backdrop-blur-sm">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold text-gray-900 mb-6 animate-pulse-slow">Commencez Dès Maintenant</h2>
+        <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto animate-fade-in">
+          Accédez immédiatement à toutes les fonctionnalités sans processus d'authentification complexe
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-in">
+          <button 
+            routerLink="/accounts"
+            class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 flex items-center justify-center mx-auto group animate-pulse-slow"
+          >
+            <i class="fas fa-rocket mr-4 text-2xl group-hover:rotate-45 transition-transform"></i>
+            Démarrer la Gestion
+          </button>
+        </div>
+        <p class="text-gray-600 mt-6 text-sm animate-fade-in">
+          <i class="fas fa-bolt text-emerald-500 mr-2"></i>
+          Accès direct à toutes les fonctionnalités • Aucune authentification requise • Prêt en 2 secondes
+        </p>
+      </div>
+    </section>
+  </div>
+</div>

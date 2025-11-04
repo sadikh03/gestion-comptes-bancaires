@@ -1,0 +1,25 @@
+<header class="bg-white shadow-md">
+  <nav class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+          <span class="text-white font-bold text-xl">A</span>
+        </div>
+        <span class="text-3xl font-bold text-emerald-700">ASNBANK</span>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex items-center space-x-12">
+        <a 
+          *ngFor="let nav of navs"
+          [routerLink]="nav.path"
+          routerLinkActive="text-emerald-600 border-b-2 border-emerald-600"
+          class="text-gray-700 hover:text-emerald-500 px-2 py-4 text-lg font-medium transition-all duration-200 border-b-2 border-transparent hover:border-emerald-400"
+        >
+          {{nav.title}}
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>

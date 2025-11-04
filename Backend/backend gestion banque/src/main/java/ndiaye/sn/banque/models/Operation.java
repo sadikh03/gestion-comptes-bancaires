@@ -1,0 +1,32 @@
+package ndiaye.sn.banque.models;
+
+import java.util.Date;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ndiaye.sn.banque.enums.TypeOfOperation;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Operation {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id ;
+    @Column(nullable = false)
+    private double amount ;
+    @Column(nullable = false)
+    private Date operationDate ;
+
+    @ManyToOne
+    private BankAccount account ;
+    @Column(nullable = false)
+    private String opereationNumber ;
+    @Column(nullable = false)
+    private TypeOfOperation operationType ;
+
+}
